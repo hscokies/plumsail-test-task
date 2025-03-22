@@ -1,23 +1,20 @@
 <script setup>
 import {DownArrow} from '@/shared/ui/icons'
 import {nextTick, onMounted, onUnmounted, ref} from "vue";
+import {useOutsideClick} from "@/shared/lib/index.js";
 defineProps({
   id: String,
   label: String,
   placeholder: String,
   value: String,
 })
+const { elementRef, active, toggleActive } = useOutsideClick(false);
 
-const open = ref(false)
 const inputRef = ref(null)
 const menuRef = ref(null)
 
 const toggle = async () => {
-  open.value = !open.value
-  if (!open.value){
-    return
-  }
-
+  toggleActive()
   await nextTick();
   adjust();
 }
@@ -45,34 +42,25 @@ const adjust = () => {
   inputRef.value.classList.remove('top')
 }
 
-const tryClose = (event) => {
-  if (inputRef && !inputRef.value.contains(event.target)) {
-    open.value = false;
-  }
-};
-
-const observer = new ResizeObserver(adjust);
 onMounted(() => {
-  document.addEventListener("click", tryClose);
   document.addEventListener("scroll", adjust);
 })
 
 onUnmounted(() => {
-  document.removeEventListener("click", tryClose);
   document.removeEventListener("scroll", adjust);
 })
 </script>
 
 <template>
-  <div class="dropdown_root" @click="toggle">
+  <div class="dropdown_root" @click="toggle" ref="elementRef">
     <label class="dropdown_label" :for="id">
       {{label}}
     </label>
-    <div :class="['dropdown_input', open && 'active']" ref="inputRef">
+    <div :class="['dropdown_input', active && 'active']" ref="inputRef">
       {{ value || placeholder }}
       <DownArrow class="dropdown_input_arrow"/>
     </div>
-    <ul v-if="open" class="dropdown_elements" ref="menuRef">
+    <ul v-if="active" class="dropdown_elements" ref="menuRef">
       <slot></slot>
     </ul>
   </div>
