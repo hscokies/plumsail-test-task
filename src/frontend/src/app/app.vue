@@ -1,12 +1,20 @@
 <script setup>
 import HelloWorld from '../components/HelloWorld.vue'
-import { TextField, FormGroup, RadioButton, Checkbox, Dropdown, DropdownItem} from '@/shared/ui'
+import { 
+  TextField,
+  FormGroup,
+  RadioButton,
+  Checkbox,
+  Dropdown,
+  DropdownItem,
+  DatePicker} from '@/shared/ui'
 import {ref} from "vue";
 
 const textValue = ref('');
 const activeRb = ref(0);
 const assignees = ref(new Set([]));
 const selectedItem = ref(null);
+const date = ref(null);
 const OnChange = (event) => {
   textValue.value = event.target.value;
 }
@@ -29,6 +37,14 @@ const OnCbCheck = (event, value) => {
 const OnSelect = (event, value) => {
   selectedItem.value = value;
 }
+
+const OnPick = (event) => {
+  const value = new Date(event.target.value)
+  if (isNaN(value)){
+    date.value = null;
+  }
+  date.value = value;
+};
 </script>
 
 <template>
@@ -42,6 +58,23 @@ const OnSelect = (event, value) => {
   </div>
   <HelloWorld msg="Vite + Vue" />
   <form style="background-color: white; padding: 20px;">
+    <DatePicker
+        @changed="OnPick"
+        :value="date"
+        format="yyyy/MM/dd"
+        label="This is date picker"
+    />
+
+    <TextField
+        id="password"
+        name="password"
+        label="Password"
+        placeholder="Enter password"
+        helper-text="Your password is between 4 and 12 characters"
+        type="password"
+        :value="textValue"
+        @changed="OnChange" />
+    
     <Dropdown
         label="Dropdown title"
         placeholder="this is dropdown placeholder"
@@ -61,16 +94,6 @@ const OnSelect = (event, value) => {
         error
         error-message="Username is required"
         placeholder="Enter username"/>
-    
-    <TextField
-        id="password"
-        name="password"
-        label="Password"
-        placeholder="Enter password"
-        helper-text="Your password is between 4 and 12 characters"
-        type="password"
-        :value="textValue"
-        @changed="OnChange" />
     
     <FormGroup label="Options">
       <RadioButton
