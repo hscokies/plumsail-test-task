@@ -9,7 +9,7 @@ export const useOutsideClick = () => {
     }
     
     const handleClick = (event) => {
-        if (elementRef && !elementRef.value.contains(event.target)) {
+        if (elementRef.value && !elementRef.value.contains(event.target)) {
             active.value = false;
         }
     };

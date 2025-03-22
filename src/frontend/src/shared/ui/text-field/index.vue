@@ -58,8 +58,9 @@ defineEmits(['changed'])
 .text-field_input{
   padding: 16px;
   background-color: transparent;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 8px;
+  outline: 1px solid #ccc;
   font-size: 16px;
   color: #333;
 
@@ -68,11 +69,11 @@ defineEmits(['changed'])
   }
 
   &:focus{
-    outline: none;
+    outline: 2px solid #7A5CFA;
   }
   
   &.error{
-    border-color: #EB5757;
+    outline-color: #EB5757;
   }
 }
 

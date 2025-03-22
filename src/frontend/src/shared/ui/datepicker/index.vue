@@ -15,7 +15,7 @@ defineProps({
 })
 defineEmits(['changed'])
 
-const { elementRef, active, toggleActive } = useOutsideClick(false);
+const { elementRef, active, toggleActive } = useOutsideClick();
 
 const datepicker = ref(null);
 
