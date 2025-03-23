@@ -10,8 +10,7 @@ defineProps({
     type: String,
     default: 'text'
   },
-  error: Boolean,
-  errorMessage: String,
+  error: String,
 })
 
 defineEmits(['changed'])
@@ -23,7 +22,7 @@ defineEmits(['changed'])
       {{ label }}
     </label>
     <input
-        :class="['text-field_input', error && 'error']"
+        :class="['text-field_input', error?.length > 0 && 'error']"
         :id="id"
         :name="name"
         :type="type"
@@ -31,11 +30,11 @@ defineEmits(['changed'])
         :value="value"
         @change="$emit('changed', $event);"
     />
-    <span class="text-field_helper-text" v-if="!error">
+    <span class="text-field_helper-text" v-if="!error?.length > 0">
       {{ helperText }}
     </span>
-    <span class="text-field_error-text" v-else-if="error">
-      {{ errorMessage }}
+    <span class="text-field_error-text" v-else-if="error?.length > 0">
+      {{ error }}
     </span>
   </div>
 </template>

@@ -4,10 +4,11 @@ import {useOutsideClick} from "@/shared/lib/index.js";
 import {ref} from "vue";
 defineProps({
   id: String,
-  name: String,
+  name: String | Number,
   label: String,
   value: Date,
   placeholder: String,
+  error: String,
   format: {
     type: String,
     default: 'yyyy-MM-dd',
@@ -41,7 +42,7 @@ const formatDate = (value, format) => {
     <div
         @click="toggleActive"
         ref="elementRef"
-        :class="['datepicker_input-wrapper', active && 'active']">
+        :class="['datepicker_input-wrapper', active && 'active', error?.length > 0 && 'error']">
       <input
           ref="dateInput"
           :id="id"
@@ -57,8 +58,9 @@ const formatDate = (value, format) => {
           type="date"
           class="datepicker_picker"
           ref="datepicker" />
-      <Calendar @click="datepicker.showPicker()"/>
+      <Calendar @click="datepicker.showPicker()" :color="error ? '#EB5757' : undefined"/>
     </div>
+    <span :class="['datepicker_error', error?.length > 0 && 'active']">{{error}}</span>
   </div>
 </template>
 
@@ -96,6 +98,10 @@ const formatDate = (value, format) => {
   &.active {
     outline: 2px solid #7A5CFA;
   }
+  
+  &.error{
+    outline-color: #EB5757;
+  }
 }
 .datepicker_picker{
   position: absolute;
@@ -113,6 +119,19 @@ const formatDate = (value, format) => {
 
   &::placeholder {
     color: #666;
+  }
+}
+
+.datepicker_error{
+  visibility: hidden;
+  text-align: left;
+  line-height: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 18px;
+  color: #EB5757;
+  &.active{
+    visibility: visible;
   }
 }
 </style>

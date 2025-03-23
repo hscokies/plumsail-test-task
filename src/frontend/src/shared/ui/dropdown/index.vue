@@ -4,14 +4,17 @@ import {nextTick, onMounted, onUnmounted, ref} from "vue";
 import {useOutsideClick} from "@/shared/lib/index.js";
 defineProps({
   id: String,
+  name: String | Number,
   label: String,
   placeholder: String,
+  error: String,
+  
   value: String,
 })
 const { elementRef, active, toggleActive } = useOutsideClick(false);
-
 const inputRef = ref(null)
 const menuRef = ref(null)
+const errorRef = ref(null)
 
 const toggle = async () => {
   toggleActive()
@@ -21,7 +24,7 @@ const toggle = async () => {
 
 const adjust = () => {
   
-  if (!inputRef.value || !menuRef.value) {
+  if (!inputRef.value || !menuRef.value || !elementRef.value) {
     return;
   }
   
@@ -30,14 +33,14 @@ const adjust = () => {
   const menuRect = menuRef.value.getBoundingClientRect();
   
   if (inputRect.bottom + menuRect.height > availableHeight){
-    menuRef.value.classList.add('top')
-
+    menuRef.value.style.transform = `translateY(-${menuRect.height}px)`;
     inputRef.value.classList.add('top')
     inputRef.value.classList.remove('bottom')
     return;
   }
-  menuRef.value.classList.remove('top')
   
+  const componentHeight = elementRef.value.getBoundingClientRect().height;
+  menuRef.value.style.transform = `translateY(${componentHeight}px)`;
   inputRef.value.classList.add('bottom')
   inputRef.value.classList.remove('top')
 }
@@ -49,35 +52,44 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("scroll", adjust);
 })
+
+
 </script>
 
 <template>
-  <div class="dropdown_root" @click="toggle" ref="elementRef">
-    <label class="dropdown_label" :for="id">
-      {{label}}
-    </label>
-    <div :class="['dropdown_input', active && 'active']" ref="inputRef">
-      {{ value || placeholder }}
-      <DownArrow class="dropdown_input_arrow"/>
+  <div class="dropdown_root" @click="toggle">
+    <div class="dropdown_wrapper"  ref="elementRef">
+      <label class="dropdown_label" :for="id">
+        {{label}}
+      </label>
+      <div :class="['dropdown_input', active && 'active', error?.length > 0 && 'error']" ref="inputRef">
+        {{ value || placeholder }}
+        <DownArrow class="dropdown_input_arrow" :color="error?.length > 0 ? '#EB5757' : '#7A5CFA'"/>
+      </div>
+      <ul v-if="active" class="dropdown_elements" ref="menuRef">
+        <slot></slot>
+      </ul>
     </div>
-    <ul v-if="active" class="dropdown_elements" ref="menuRef">
-      <slot></slot>
-    </ul>
+    <span :class="['dropdown_error-text', error?.length > 0 && 'active']" ref="errorRef">
+      {{ error }}
+    </span>
   </div>
 </template>
 
 <style scoped>
 .dropdown_root{
   position: relative;
-
-  width: 100%;
-  display: inline-flex;
-  flex-direction: column;
   
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+
+.dropdown_root, .dropdown_wrapper{
+  width: 100%;
+  display: inline-flex;
+  flex-direction: column;
 }
 
 .dropdown_label{
@@ -110,6 +122,10 @@ onUnmounted(() => {
     outline: 2px solid #7A5CFA;
   }
   
+  &.error{
+    outline-color: #EB5757;
+  }
+  
   &.active{
     &.bottom{
       border-bottom-left-radius: 0;
@@ -132,15 +148,26 @@ onUnmounted(() => {
 
 .dropdown_elements{
   position: absolute;
-  top: 100%;
+  z-index: 2;
+  top: 0;
   left: 0;
   width: 100%;
   background: white;
   margin: 0;
   padding: 0;
-  
-  &.top{
-    transform: translateY(-150%);
+}
+
+.dropdown_error-text{
+  visibility: hidden;
+  margin-top: 8px;
+  text-align: left;
+  line-height: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 18px;
+  color: #EB5757;
+  &.active{
+    visibility: visible;
   }
 }
 </style>

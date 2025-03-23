@@ -1,9 +1,9 @@
 <script setup>
 defineProps({
   id: String,
-  name: String,
+  name: String | Number,
   label: String,
-  value: String,
+  value: String | Number,
   checked: Boolean,
 })
 
