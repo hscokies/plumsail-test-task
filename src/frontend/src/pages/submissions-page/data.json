@@ -1,0 +1,39 @@
+{
+  "id": 1,
+  "columns": [
+    {
+      "key": "interview-id",
+      "label": "Interview ID"
+    },
+    {
+      "key": "email",
+      "label": "Email"
+    },
+    {
+      "key": "birthdate",
+      "label": "Date of birth"
+    },
+    {
+      "key": "ticket-type",
+      "label": "Ticket type"
+    },
+    {
+      "key": "preferred-seating",
+      "label": "Preferred Seating"
+    },
+    {
+      "key": "add-ons",
+      "label": "Add-ons"
+    }
+  ],
+  "data": [
+    {
+      "interview-id": "EBBFFA18-13FB-4C0D-BF85-98C4016FC099",
+      "email": "address@example.com",
+      "birthdate": "2001-02-03",
+      "ticket-type": "VIP",
+      "preferred-seating": "Middle row",
+      "add-ons": ["Parking pass", "Afterpaty ticket"]
+    }
+  ]
+}
