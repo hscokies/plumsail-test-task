@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import {FormPage, FormsDashboard} from '@/pages';
+import {FormPage, FormsDashboardPage, SubmissionsPage} from '@/pages';
 import {ROUTES} from "@/app/router/routes.js";
 
 export const router = createRouter({
@@ -7,11 +7,15 @@ export const router = createRouter({
     routes: [
         {
             path: ROUTES.Dashboard,
-            component: FormsDashboard,
+            component: FormsDashboardPage,
         },
         {
             path: ROUTES.Form + '/:id',
             component: FormPage,
+        },
+        {
+            path: ROUTES.Submissions,
+            component: SubmissionsPage,
         }
     ]
 })
