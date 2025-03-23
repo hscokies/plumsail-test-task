@@ -2,10 +2,10 @@
 import { Checkmark } from '@/shared/ui/icons'
 
 defineProps({
-  id: String,
-  name: String,
+  id: String | Number,
+  name: String | Number,
   label: String,
-  value: String,
+  value: String | Number,
   checked: Boolean,
 })
 

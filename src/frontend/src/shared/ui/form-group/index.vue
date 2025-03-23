@@ -3,10 +3,7 @@ defineProps({
   name: String,
   disabled: Boolean,
   label: String,
-  error: {
-    type: String,
-    default: '',
-  }
+  error: String,
 })
 </script>
 
@@ -21,9 +18,9 @@ defineProps({
     <div class="form-group_wrapper">
       <slot/>
     </div>
-    <span v-if="error.length > 0" class="form-group_error">
+    <p :class="['form-group_error', error?.length > 0 && 'active']">
       {{error}}
-    </span>
+    </p>
   </fieldset>
 </template>
 
@@ -34,6 +31,8 @@ defineProps({
 
   outline: none;
   border: none;
+  
+  padding: 0;
 }
 
 .form-group_wrapper{
@@ -48,14 +47,20 @@ defineProps({
   font-size: 12px;
   font-weight: 600;
   color: #666;
+  margin-bottom: 8px;
 }
 
 .form-group_error{
+  visibility: hidden;
   text-align: left;
   line-height: 18px;
   font-size: 12px;
   font-weight: 600;
+  min-height: 18px;
   color: #EB5757;
   margin-top: 5px;
+  &.active{
+    visibility: visible;
+  }
 }
 </style>
