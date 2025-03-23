@@ -87,6 +87,10 @@ const onSubmit = () => {
   gap: 15px;
   height: 100%;
   width: 70%;
+
+  @media (max-width: 550px) {
+    width: 100%;
+  }
 }
 
 .form-page_header_title{
@@ -104,9 +108,5 @@ const onSubmit = () => {
 .form-page_button-container{
   width: 100%;
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: start;
-  gap: 62px;
 }
-
 </style>
