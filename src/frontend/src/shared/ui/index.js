@@ -8,6 +8,7 @@ import FormGroup from "./form-group/index.vue";
 export * from "./form-block/model/index.js"
 import RadioButton from "./radio-button/index.vue";
 import TextField from "./text-field/index.vue";
+import Table from "./table/index.vue";
 
 export { 
     TextField,
@@ -16,4 +17,5 @@ export {
     Checkbox,
     Dropdown,
     DropdownItem,
-    DatePicker};
+    DatePicker,
+    Table};
