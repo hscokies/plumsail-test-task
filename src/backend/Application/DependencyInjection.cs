@@ -13,9 +13,8 @@ public static class DependencyInjection
     {
         var domainTypes = new HashSet<Type>
         {
-            typeof(ICommandHandler<>),
-            typeof(ICommandHandler<,>),
-            typeof(IQueryHandler<,>)
+            typeof(IBaseCommandHandler),
+            typeof(IQueryHandler)
         };
 
         var handlers = typeof(ICommand).Assembly.GetTypes()

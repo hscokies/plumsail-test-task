@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Web.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddInfrastructure(builder.Configuration)
@@ -17,18 +16,23 @@ builder.Services
     .AddPresentation();
 
 var app = builder.Build();
-
+app.MapEndpoints();
 // Should have probably added health checks
-app.Map("/ping", innerApp => innerApp.Run(async innerContext => await innerContext.Response.WriteAsync("Ok")));
+app.MapGet("/api/ping", (c) => c.Response.WriteAsync("Ok")).WithOpenApi();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(options => options.RouteTemplate = "api/swagger/{documentname}/swagger.json");
-    app.UseSwaggerUI(c =>
+    app.UseOpenApi();
+    app.UseSwaggerUi(c =>
     {
-        c.RoutePrefix = "api/swagger";
-        c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Forms API");
+        c.Path = "/api/swagger";
     });
+    // app.UseSwagger(options => options.RouteTemplate = "api/swagger/{documentname}/swagger.json");
+    // app.UseSwaggerUI(c =>
+    // {
+    //     c.RoutePrefix = "api/swagger";
+    //     c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Forms API");
+    // });
     app.ApplyMigrations();
 }
 
