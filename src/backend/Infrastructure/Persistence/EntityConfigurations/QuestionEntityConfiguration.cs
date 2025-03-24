@@ -1,5 +1,6 @@
 using Domain.Entities.Questions;
 using Infrastructure.Persistence.DiscriminatorMappings;
+using Infrastructure.Persistence.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -27,5 +28,45 @@ internal class QuestionEntityConfiguration : IEntityTypeConfiguration<QuestionBa
         {
             discriminatorBuilder.HasValue(type, discriminator);
         }
+    }
+}
+
+internal class OpenQuestionEntityConfiguration : IEntityTypeConfiguration<OpenQuestion>
+{
+    public void Configure(EntityTypeBuilder<OpenQuestion> builder)
+    {
+        builder.Seed();
+    }
+}
+
+internal class DateQuestionEntityConfiguration : IEntityTypeConfiguration<DateQuestion>
+{
+    public void Configure(EntityTypeBuilder<DateQuestion> builder)
+    {
+        builder.Seed();
+    }
+}
+
+internal class SelectionQuestionEntityConfiguration : IEntityTypeConfiguration<SelectionQuestion>
+{
+    public void Configure(EntityTypeBuilder<SelectionQuestion> builder)
+    {
+        builder.Seed();
+    }
+}
+
+internal class SingleOptionsQuestionEntityConfiguration : IEntityTypeConfiguration<SingleOptionQuestion>
+{
+    public void Configure(EntityTypeBuilder<SingleOptionQuestion> builder)
+    {
+        builder.Seed();
+    }
+}
+
+internal class MultipleOptionsQuestionEntityConfiguration : IEntityTypeConfiguration<MultipleOptionsQuestion>
+{
+    public void Configure(EntityTypeBuilder<MultipleOptionsQuestion> builder)
+    {
+        builder.Seed();
     }
 }

@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Infrastructure.Persistence.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,5 +23,7 @@ internal class FormEntityConfiguration : IEntityTypeConfiguration<Form>
         builder.HasMany(x => x.Questions)
             .WithOne(x => x.Form)
             .HasForeignKey(x => x.FormId);
+        
+        builder.Seed();
     }
 }

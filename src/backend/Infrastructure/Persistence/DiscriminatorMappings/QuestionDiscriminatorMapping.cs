@@ -10,9 +10,9 @@ public static class QuestionDiscriminatorMapping
     {
         [nameof(OpenQuestion)] = typeof(OpenQuestion),
         [nameof(DateQuestion)] = typeof(DateQuestion),
-        [nameof(SingleOptionQuestionBase)] = typeof(SingleOptionQuestionBase),
-        [nameof(MultipleOptionsQuestionBase)] = typeof(MultipleOptionsQuestionBase),
-        [nameof(SelectionQuestionBase)] = typeof(SelectionQuestionBase)
+        [nameof(SingleOptionQuestion)] = typeof(SingleOptionQuestion),
+        [nameof(MultipleOptionsQuestion)] = typeof(MultipleOptionsQuestion),
+        [nameof(SelectionQuestion)] = typeof(SelectionQuestion)
     };
 
     public static Type GetTypeOrDefault(string discriminator)

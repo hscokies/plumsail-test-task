@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Infrastructure.Persistence.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,5 +18,7 @@ internal class QuestionOptionEntityConfiguration : IEntityTypeConfiguration<Ques
         builder.HasOne(x => x.Question)
             .WithMany(x => x.Options)
             .HasForeignKey(x => x.QuestionId);
+        
+        builder.Seed();
     }
 }
