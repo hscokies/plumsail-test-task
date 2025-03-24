@@ -1,7 +1,8 @@
 <script setup>
-import { Calendar } from '@/shared/ui/icons'
+import {Calendar} from '@/shared/ui/icons'
 import {useOutsideClick} from "@/shared/lib/index.js";
 import {ref} from "vue";
+
 defineProps({
   id: String,
   name: String | Number,
@@ -16,7 +17,7 @@ defineProps({
 })
 defineEmits(['changed'])
 
-const { elementRef, active, toggleActive } = useOutsideClick();
+const {elementRef, active, toggleActive} = useOutsideClick();
 
 const datepicker = ref(null);
 
@@ -36,31 +37,31 @@ const formatDate = (value, format) => {
 
 <template>
   <div class="datepicker_root">
-    <label class="datepicker_label" :for="id">
-      {{label}}
+    <label :for="id" class="datepicker_label">
+      {{ label }}
     </label>
     <div
-        @click="toggleActive"
         ref="elementRef"
-        :class="['datepicker_input-wrapper', active && 'active', error?.length > 0 && 'error']">
+        :class="['datepicker_input-wrapper', active && 'active', error?.length > 0 && 'error']"
+        @click="toggleActive">
       <input
-          ref="dateInput"
           :id="id"
-          :name="name"
-          :value="formatDate(value, format)"
-          @change="$emit('changed', $event)"
-          :placeholder="placeholder || format" 
+          ref="dateInput"
           :maxlength="format.length"
+          :name="name"
+          :placeholder="placeholder || format"
+          :value="formatDate(value, format)"
           autocomplete="off"
-          class="datepicker_input"/>
+          class="datepicker_input"
+          @change="$emit('changed', $event)"/>
       <input
-          @change="$emit('changed', $event)"
-          type="date"
+          ref="datepicker"
           class="datepicker_picker"
-          ref="datepicker" />
-      <Calendar @click="datepicker.showPicker()" :color="error ? '#EB5757' : undefined"/>
+          type="date"
+          @change="$emit('changed', $event)"/>
+      <Calendar :color="error ? '#EB5757' : undefined" @click="datepicker.showPicker()"/>
     </div>
-    <span :class="['datepicker_error', error?.length > 0 && 'active']">{{error}}</span>
+    <span :class="['datepicker_error', error?.length > 0 && 'active']">{{ error }}</span>
   </div>
 </template>
 
@@ -73,7 +74,7 @@ const formatDate = (value, format) => {
   gap: 8px;
 }
 
-.datepicker_label{
+.datepicker_label {
   text-align: left;
   line-height: 18px;
   font-size: 12px;
@@ -94,21 +95,23 @@ const formatDate = (value, format) => {
   outline: 1px solid #ccc;
   cursor: pointer;
   transition: outline-color .2s ease-in-out;
-  
+
   &.active {
     outline: 2px solid #7A5CFA;
   }
-  
-  &.error{
+
+  &.error {
     outline-color: #EB5757;
   }
 }
-.datepicker_picker{
+
+.datepicker_picker {
   position: absolute;
   top: 0;
   right: 0;
   opacity: 0;
 }
+
 .datepicker_input {
   width: 100%;
   background-color: transparent;
@@ -122,7 +125,7 @@ const formatDate = (value, format) => {
   }
 }
 
-.datepicker_error{
+.datepicker_error {
   visibility: hidden;
   text-align: left;
   line-height: 18px;
@@ -130,7 +133,8 @@ const formatDate = (value, format) => {
   font-weight: 600;
   min-height: 18px;
   color: #EB5757;
-  &.active{
+
+  &.active {
     visibility: visible;
   }
 }

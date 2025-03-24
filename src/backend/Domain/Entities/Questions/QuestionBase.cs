@@ -1,0 +1,13 @@
+namespace Domain.Entities.Questions;
+
+public abstract class QuestionBase
+{
+    public int Id { get; init; }
+    public int FormId { get; init; }
+    public Form Form { get; init; }
+    public string Key { get; init; }
+    public string Title { get; set; }
+    public string Placeholder { get; init; }
+    public string Discriminator { get; init; }
+    public string Validator { get; init; }
+}

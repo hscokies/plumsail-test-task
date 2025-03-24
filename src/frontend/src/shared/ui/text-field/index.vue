@@ -18,34 +18,35 @@ defineEmits(['changed'])
 
 <template>
   <div class="text-field_root">
-    <label class="text-field_label" :for="id">
+    <label :for="id" class="text-field_label">
       {{ label }}
     </label>
     <input
-        :class="['text-field_input', error?.length > 0 && 'error']"
         :id="id"
+        :class="['text-field_input', error?.length > 0 && 'error']"
         :name="name"
-        :type="type"
         :placeholder="placeholder"
+        :type="type"
         :value="value"
         @change="$emit('changed', $event);"
     />
-    <span class="text-field_helper-text" v-if="!error?.length > 0">
+    <span v-if="!error?.length > 0" class="text-field_helper-text">
       {{ helperText }}
     </span>
-    <span class="text-field_error-text" v-else-if="error?.length > 0">
+    <span v-else-if="error?.length > 0" class="text-field_error-text">
       {{ error }}
     </span>
   </div>
 </template>
 
 <style scoped>
-.text-field_root{
+.text-field_root {
   display: inline-flex;
   flex-flow: column nowrap;
   gap: 8px;
   width: 100%;
 }
+
 .text-field_label {
   text-align: left;
   line-height: 18px;
@@ -54,7 +55,7 @@ defineEmits(['changed'])
   color: #666;
 }
 
-.text-field_input{
+.text-field_input {
   padding: 16px;
   background-color: transparent;
   border: none;
@@ -67,16 +68,16 @@ defineEmits(['changed'])
     color: #666;
   }
 
-  &:focus{
+  &:focus {
     outline: 2px solid #7A5CFA;
   }
-  
-  &.error{
+
+  &.error {
     outline-color: #EB5757;
   }
 }
 
-.text-field_helper-text{
+.text-field_helper-text {
   text-align: left;
   line-height: 18px;
   font-size: 12px;
@@ -84,7 +85,7 @@ defineEmits(['changed'])
   color: #666;
 }
 
-.text-field_error-text{
+.text-field_error-text {
   text-align: left;
   line-height: 18px;
   font-size: 12px;

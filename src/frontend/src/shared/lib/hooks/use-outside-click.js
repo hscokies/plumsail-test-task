@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 
 export const useOutsideClick = () => {
     const active = ref(false);
@@ -7,7 +7,7 @@ export const useOutsideClick = () => {
     const toggleActive = () => {
         active.value = !active.value;
     }
-    
+
     const handleClick = (event) => {
         if (elementRef.value && !elementRef.value.contains(event.target)) {
             active.value = false;
@@ -22,5 +22,5 @@ export const useOutsideClick = () => {
         document.removeEventListener("click", handleClick);
     });
 
-    return { elementRef, active, toggleActive };
+    return {elementRef, active, toggleActive};
 }

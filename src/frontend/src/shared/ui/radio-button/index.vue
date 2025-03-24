@@ -13,19 +13,19 @@ defineEmits(['changed'])
 <template>
   <div class="radio-button_root">
     <input
-      class="radio-button_input"
-      :id="id"
-      type="radio"
-      :name="name"
-      :value="value"
-      :checked="checked"
-      @change="$emit('changed', $event);"
+        :id="id"
+        :checked="checked"
+        :name="name"
+        :value="value"
+        class="radio-button_input"
+        type="radio"
+        @change="$emit('changed', $event);"
     />
     <div class="radio-button_radio">
       <span class="radio-button_radio-dot"/>
     </div>
-    <label class="radio-button_label" :for="id">
-      {{label}}
+    <label :for="id" class="radio-button_label">
+      {{ label }}
     </label>
   </div>
 </template>
@@ -60,7 +60,7 @@ defineEmits(['changed'])
   height: 24px;
 }
 
-.radio-button_radio-dot{
+.radio-button_radio-dot {
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -70,10 +70,10 @@ defineEmits(['changed'])
 }
 
 .radio-button_input:checked + .radio-button_radio > .radio-button_radio-dot {
- background: #7A5CFA;
+  background: #7A5CFA;
 }
 
-.radio-button_label{
+.radio-button_label {
   text-align: left;
   line-height: 24px;
   font-size: 16px;

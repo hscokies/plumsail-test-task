@@ -1,8 +1,8 @@
 <script setup>
 import {RouterLink} from 'vue-router'
 import {ROUTES} from "@/app/router/index.js";
-import {Link, BarChart} from '@/shared/ui/icons'
-import { Table } from '@/shared/ui'
+import {BarChart, Link} from '@/shared/ui/icons'
+import {Table} from '@/shared/ui'
 import MockData from './data.json'
 
 const headers = [
@@ -24,11 +24,11 @@ const headers = [
 <template>
   <Table :columns="headers" :rows="MockData" has-actions>
     <template #data="{ row }">
-      <RouterLink :to="`${ROUTES.Form}/${row.id}`" title="Get link" target="_blank">
-        <Link />
+      <RouterLink :to="`${ROUTES.Form}/${row.id}`" target="_blank" title="Get link">
+        <Link/>
       </RouterLink>
       <RouterLink :to="`${ROUTES.Submissions}`" title="Get submissions">
-        <BarChart />
+        <BarChart/>
       </RouterLink>
     </template>
   </Table>

@@ -1,5 +1,5 @@
 <script setup>
-import { Checkmark } from '@/shared/ui/icons'
+import {Checkmark} from '@/shared/ui/icons'
 
 defineProps({
   id: String | Number,
@@ -15,16 +15,16 @@ defineEmits(['changed'])
 <template>
   <div class="checkbox_root">
     <input
-        class="checkbox_input"
         :id="id"
-        type="checkbox"
+        :checked="checked"
         :name="name"
         :value="value"
-        :checked="checked"
+        class="checkbox_input"
+        type="checkbox"
         @change="$emit('changed', $event);"
     />
     <div class="checkbox_box">
-      <Checkmark v-if="checked" />
+      <Checkmark v-if="checked"/>
     </div>
     <label class="checkbox_label">
       {{ label }}
@@ -41,7 +41,8 @@ defineEmits(['changed'])
   cursor: pointer;
   vertical-align: middle;
 }
-.checkbox_input{
+
+.checkbox_input {
   cursor: inherit;
   position: absolute;
   opacity: 0;
@@ -50,7 +51,7 @@ defineEmits(['changed'])
   z-index: 1;
 }
 
-.checkbox_box{
+.checkbox_box {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,7 +66,7 @@ defineEmits(['changed'])
   background: #7A5CFA;
 }
 
-.checkbox_label{
+.checkbox_label {
   text-align: left;
   line-height: 24px;
   font-size: 16px;
