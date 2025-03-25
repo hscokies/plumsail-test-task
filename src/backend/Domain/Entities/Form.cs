@@ -9,6 +9,6 @@ public class Form
     public string Title { get; set; }
     public string Subtitle { get; set; }
     public string Color { get; set; }
-    public ICollection<QuestionBase> Questions { get; init; }
-    public ICollection<Submission> Submissions { get; init; }
+    public ICollection<QuestionBase> Questions { get; init; } = [];
+    public ICollection<Submission> Submissions { get; init; } = [];
 }

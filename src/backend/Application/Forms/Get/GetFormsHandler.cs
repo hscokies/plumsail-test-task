@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Abstractions;
-using Application.Mappers;
 using Application.Models;
 using Domain.Entities;
 using Domain.Entities.Questions;
@@ -25,11 +24,9 @@ public sealed class GetFormsHandler(IDataContext dataContext) : IQueryHandler<Ge
         var formsQuery = GetFormsQuery(query);
         await foreach (var formData in formsQuery.AsAsyncEnumerable().WithCancellation(ct))
         {
-            var form = new GetFormModel(formData.Id);
-            foreach (var question in formData.Questions)
-            {
-                form.Questions.Add(question.ToQuestionModel());
-            }
+            var form = new GetFormModel(
+                formData.Id, formData.Title,
+                formData.Subtitle, formData.Color);
 
             forms.Add(form);
         }
@@ -45,7 +42,6 @@ public sealed class GetFormsHandler(IDataContext dataContext) : IQueryHandler<Ge
             formsQuery = formsQuery.Where(q => EF.Functions.ILike(q.Title, $"%{query.Title}%"));
         }
 
-        return formsQuery.Include(x => x.Questions)
-            .ThenInclude(x => (x as OptionsQuestionBase).Options);
+        return formsQuery.AsNoTracking();
     }
 }

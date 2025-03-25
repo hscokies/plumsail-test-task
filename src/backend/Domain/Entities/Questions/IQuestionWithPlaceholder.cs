@@ -1,6 +1,6 @@
 namespace Domain.Entities.Questions;
 
-public class OpenQuestion : QuestionBase, IQuestionWithPlaceholder
+public interface IQuestionWithPlaceholder
 {
     public string Placeholder { get; set; }
 }

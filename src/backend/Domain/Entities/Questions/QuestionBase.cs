@@ -5,9 +5,8 @@ public abstract class QuestionBase
     public int Id { get; init; }
     public int FormId { get; init; }
     public Form Form { get; init; }
-    public string Key { get; init; }
+    public string Key { get; set; }
     public string Title { get; set; }
-    public string Placeholder { get; init; }
-    public string Discriminator { get; init; }
-    public string Validator { get; init; }
+    public string Discriminator { get; set; }
+    public string Validator { get; set; }
 }

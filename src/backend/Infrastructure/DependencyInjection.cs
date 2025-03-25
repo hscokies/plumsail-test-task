@@ -1,9 +1,12 @@
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interfaces;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NLog;
+using NLog.Extensions.Hosting;
 using NLog.Extensions.Logging;
 using NLog.Targets;
 
@@ -11,43 +14,40 @@ namespace Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this WebApplicationBuilder builder, IConfiguration configuration)
     {
-        return services.AddPersistence(configuration)
-            .AddLogging();
+        return builder.AddPersistence(configuration)
+            .AddLogging(configuration)
+            .Services;
     }
 
-    private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    private static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-        services.AddDbContext<DataContext>(
+        builder.Services.AddDbContext<DataContext>(
             options => options
-#if DEBUG
-                .UseInMemoryDatabase("plumsail-test-task"));
-#else
-                .UseNpgsql(connectionString)
+                // .UseInMemoryDatabase("plumsail-test-task"));
+                .UseNpgsql(connectionString, b =>
+                {
+                    b.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                })
                 .UseSnakeCaseNamingConvention());
-#endif
 
-        services.AddScoped<IDataContext>(sp => sp.GetRequiredService<DataContext>());
+        builder.Services.AddScoped<IDataContext>(sp => sp.GetRequiredService<DataContext>());
 
-        return services;
+        return builder;
     }
 
-    private static IServiceCollection AddLogging(this IServiceCollection services, IConfiguration configuration)
+    private static WebApplicationBuilder AddLogging(this WebApplicationBuilder builder, IConfiguration configuration)
     {
+        builder.Logging.ClearProviders();
+        builder.Host.UseNLog();
+        
         var loggerConfigurationSection = configuration.GetSection("NLog");
         var loggerConfiguration = new NLogLoggingConfiguration(loggerConfigurationSection);
-        var consoleTarget = new ColoredConsoleTarget
-        {
-            Name = "c",
-            Layout = "${level:uppercase=true}|${longdate}|${logger}\n${message}"
-        };
-
-        loggerConfiguration.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
         LogManager.Configuration = loggerConfiguration;
-
-        return services;
+        
+        return builder;
     }
 }

@@ -4,8 +4,10 @@ using Domain.Entities.Questions;
 
 namespace Application.Models;
 
-public class DateQuestionModel : QuestionModel
+public class DateQuestionModel : QuestionModel, IPlaceholderQuestion
 {
+    public const string Discriminator = nameof(DateQuestion);
+    public override string GetDiscriminator() => Discriminator;
     public string Placeholder { get; init; }
     public static implicit operator DateQuestionModel(DateQuestion entity)
     {

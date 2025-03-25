@@ -56,6 +56,11 @@ public class Result<TValue> : Result
     {
         return new Result<TValue>(true, value, Error.None);
     }
+    
+    public static implicit operator Result<TValue>(Error error)
+    {
+        return new Result<TValue>(false, default, error);
+    }
 
     public TOut Match<TOut>(
         Func<TValue, TOut> onSuccess,

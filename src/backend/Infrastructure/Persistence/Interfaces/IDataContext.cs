@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Entities.Answers;
 using Domain.Entities.Questions;
@@ -12,4 +14,6 @@ public interface IDataContext
     DbSet<QuestionOption> QuestionOptions { get; init; }
     DbSet<Submission> Submissions { get; init; }
     DbSet<AnswerBase> Answers { get; init; }
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

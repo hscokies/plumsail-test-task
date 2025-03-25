@@ -1,11 +1,15 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using Domain.Entities.Questions;
 
 namespace Application.Models;
 
-public class SingleOptionQuestionModel : OptionsQuestionModel
+public class SingleOptionQuestionModel : QuestionModel, IOptionsQuestionModel
 {
+    public const string Discriminator = nameof(SingleOptionQuestion);
+    public override string GetDiscriminator() => Discriminator;
+    public ICollection<QuestionOptionModel> Options { get; init; }
     public static implicit operator SingleOptionQuestionModel(SingleOptionQuestion entity)
     {
         return new SingleOptionQuestionModel()

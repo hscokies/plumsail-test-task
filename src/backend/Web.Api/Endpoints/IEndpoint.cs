@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Routing;
 
-namespace Web.Api.Enpoints;
+namespace Web.Api.Endpoints;
 
 internal interface IEndpoint
 {

@@ -1,4 +1,4 @@
-namespace Web.Api.Enpoints;
+namespace Web.Api.Endpoints;
 
 internal static class Tags
 {

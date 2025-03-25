@@ -5,7 +5,4 @@ namespace Application.Forms.Get;
 
 public sealed class GetFormsResponse : List<GetFormModel>;
 
-public sealed record GetFormModel(int FormId)
-{
-    public ICollection<QuestionModel> Questions { get; } = new List<QuestionModel>();
-}
+public sealed record GetFormModel(int FormId, string Title, string Subtitle, string Color);

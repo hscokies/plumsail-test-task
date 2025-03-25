@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using Application.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
-using Web.Api.Enpoints;
+using NJsonSchema.Generation.TypeMappers;
+using Web.Api.Endpoints;
 using Web.Api.Infrastructure;
 
 namespace Web.Api.Extensions;
@@ -43,16 +46,22 @@ internal static class ServiceCollectionExtensions
 
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+
         services.AddEndpointsApiExplorer();
         services.AddOpenApiDocument(settings =>
         {
             settings.Title = "Forms API";
             settings.Version = "v1";
         });
-
-        services.AddExceptionHandler<GlobalExceptionHandler>();
+        
         services.AddProblemDetails();
 
+        services.ConfigureHttpJsonOptions(x =>
+        {
+            x.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        });
+        
         return services;
     }
 }

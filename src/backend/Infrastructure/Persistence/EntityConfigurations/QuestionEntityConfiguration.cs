@@ -18,8 +18,6 @@ internal class QuestionEntityConfiguration : IEntityTypeConfiguration<QuestionBa
         builder.Property(x => x.Title)
             .HasMaxLength(256)
             .IsRequired();
-        builder.Property(x => x.Placeholder)
-            .HasMaxLength(64);
         builder.Property(x => x.Validator)
             .HasMaxLength(256);
 
@@ -35,6 +33,10 @@ internal class OpenQuestionEntityConfiguration : IEntityTypeConfiguration<OpenQu
 {
     public void Configure(EntityTypeBuilder<OpenQuestion> builder)
     {
+        builder.Property(x => x.Placeholder)
+            .HasMaxLength(64)
+            .HasColumnName("placeholder");
+        
         builder.Seed();
     }
 }
@@ -43,6 +45,10 @@ internal class DateQuestionEntityConfiguration : IEntityTypeConfiguration<DateQu
 {
     public void Configure(EntityTypeBuilder<DateQuestion> builder)
     {
+        builder.Property(x => x.Placeholder)
+            .HasMaxLength(64)
+            .HasColumnName("placeholder");
+        
         builder.Seed();
     }
 }
@@ -51,6 +57,10 @@ internal class SelectionQuestionEntityConfiguration : IEntityTypeConfiguration<S
 {
     public void Configure(EntityTypeBuilder<SelectionQuestion> builder)
     {
+        builder.Property(x => x.Placeholder)
+            .HasMaxLength(64)
+            .HasColumnName("placeholder");
+        
         builder.Seed();
     }
 }

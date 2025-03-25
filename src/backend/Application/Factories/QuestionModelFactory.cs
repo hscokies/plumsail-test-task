@@ -2,7 +2,7 @@ using System;
 using Application.Models;
 using Domain.Entities.Questions;
 
-namespace Application.Mappers;
+namespace Application.Factories;
 
 internal static class QuestionModelFactory
 {
