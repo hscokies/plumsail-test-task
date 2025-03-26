@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Application.Models.Questions;
+using Application.Forms.GetById.QuestionModels;
 
 namespace Application.Forms.GetById;
 

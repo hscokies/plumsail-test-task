@@ -11,10 +11,7 @@ internal class QuestionEntityConfiguration : IEntityTypeConfiguration<QuestionBa
     public void Configure(EntityTypeBuilder<QuestionBase> builder)
     {
         builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.Key)
-            .HasMaxLength(256)
-            .IsRequired();
+        
         builder.Property(x => x.Title)
             .HasMaxLength(256)
             .IsRequired();

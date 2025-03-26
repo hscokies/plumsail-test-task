@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Hosting;
 using NLog.Extensions.Logging;
-using NLog.Targets;
 
 namespace Infrastructure;
 
@@ -27,12 +26,12 @@ public static class DependencyInjection
 
         builder.Services.AddDbContext<DataContext>(
             options => options
-                // .UseInMemoryDatabase("plumsail-test-task"));
-                .UseNpgsql(connectionString, b =>
-                {
-                    b.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                })
-                .UseSnakeCaseNamingConvention());
+                .UseInMemoryDatabase("plumsail-test-task"));
+        // .UseNpgsql(connectionString, b =>
+        // {
+        //     b.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+        // })
+        // .UseSnakeCaseNamingConvention());
 
         builder.Services.AddScoped<IDataContext>(sp => sp.GetRequiredService<DataContext>());
 

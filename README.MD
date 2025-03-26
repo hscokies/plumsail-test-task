@@ -1,3 +1,4 @@
+# Plumsail test task
 1. Create an arbitrary form with CSS and Vue as a JavaScript framework. Say, a contact or order form with at least five
    fields of different types:
     - text
@@ -17,3 +18,283 @@
 4. Add UI for listing and searching the submitted objects from different forms on one page.
 5. Pack all JS- and CSS-files of the project into a single file with the help of a build system of your choice (Vite or
    Webpack).
+
+## API Declarations
+
+### Forms
+
+#### Creating new form
+
+POST: _/api/forms_
+
+\- request
+
+```json
+{
+   "title": "User Feedback Form",
+   "subtitle": "Help us improve our services",
+   "color": "#3498db",
+   "questions": [
+      {
+         "$type": "OpenQuestion",
+         "Title": "What is your email?",
+         "Placeholder": "Enter your email",
+         "Validator": "email"
+      },
+      {
+         "$type": "DateQuestion",
+         "Title": "What is your birthdate?",
+         "Validator": "birthdate"
+      },
+      {
+         "$type": "SelectionQuestion",
+         "Title": "Select your preferred contact method",
+         "Placeholder": "Choose one",
+         "options": [
+            "Email",
+            "Phone",
+            "In-person"
+         ]
+      },
+      {
+         "$type": "SingleOptionQuestion",
+         "Title": "Which service did you use?",
+         "options": [
+            "Delivery",
+            "In-store purchase"
+         ]
+      },
+      {
+         "$type": "MultipleOptionsQuestion",
+         "Title": "What features do you like?",
+         "Validator": "checkbox",
+         "options": [
+            "Speed",
+            "Customer support",
+            "Ease of use"
+         ]
+      }
+   ]
+}
+```
+
+\- response
+
+```json
+1
+```
+
+#### Get available forms
+
+POST: _/api/forms?Search={string?}_
+
+*Response of this method is cached for 5 minutes.
+
+\- request
+\<empty\>
+
+\- response
+
+```json
+[
+   {
+      "formId": 1,
+      "title": "User Feedback Form",
+      "subtitle": "Help us improve our services",
+      "color": "#3498db"
+   }
+]
+```
+
+#### Get form
+
+POST: _/api/forms/{id:int}_
+
+\- request
+\<empty\>
+
+\- response
+
+```json
+{
+   "id": 1,
+   "title": "User Feedback Form",
+   "subtitle": "Help us improve our services",
+   "color": "#3498db",
+   "questions": [
+      {
+         "$type": "DateQuestion",
+         "id": 2,
+         "title": "What is your birthdate?",
+         "validator": "birthdate"
+      },
+      {
+         "$type": "OpenQuestion",
+         "placeholder": "Enter your email",
+         "id": 1,
+         "title": "What is your email?",
+         "validator": "email"
+      },
+      {
+         "$type": "MultipleOptionsQuestion",
+         "options": [
+            {
+               "id": 6,
+               "label": "Speed"
+            },
+            {
+               "id": 7,
+               "label": "Customer support"
+            },
+            {
+               "id": 8,
+               "label": "Ease of use"
+            }
+         ],
+         "id": 5,
+         "title": "What features do you like?",
+         "validator": "checkbox"
+      },
+      {
+         "$type": "SelectionQuestion",
+         "options": [
+            {
+               "id": 1,
+               "label": "Email"
+            },
+            {
+               "id": 2,
+               "label": "Phone"
+            },
+            {
+               "id": 3,
+               "label": "In-person"
+            }
+         ],
+         "id": 3,
+         "title": "Select your preferred contact method",
+         "validator": "none"
+      },
+      {
+         "$type": "SingleOptionQuestion",
+         "options": [
+            {
+               "id": 4,
+               "label": "Delivery"
+            },
+            {
+               "id": 5,
+               "label": "In-store purchase"
+            }
+         ],
+         "id": 4,
+         "title": "Which service did you use?",
+         "validator": "none"
+      }
+   ]
+}
+```
+
+### Submissions
+
+#### Submitting the form
+
+POST: _/submissions_
+
+\- request
+
+```json
+{
+   "formId": 1,
+   "answers": [
+      {
+         "$type": "DateQuestion",
+         "questionId": 2,
+         "value": "2000-01-02"
+      },
+      {
+         "$type": "MultipleOptionsQuestion",
+         "questionId": 5,
+         "value": [
+            8,
+            6,
+            8
+         ]
+      },
+      {
+         "$type": "OpenQuestion",
+         "questionId": 1,
+         "value": "email@example.com"
+      },
+      {
+         "$type": "SelectionQuestion",
+         "questionId": 3,
+         "value": 3
+      },
+      {
+         "$type": "SingleOptionQuestion",
+         "questionId": 4,
+         "value": 5
+      }
+   ]
+}
+```
+
+\- response
+
+```json
+"8863aeba-ad84-4613-9a2f-a595beafd769"
+```
+
+#### Get submissions (all forms)
+
+GET: _/submissions/api/submissions?Search={string?}_
+
+*Response of this method is cached for 5 minutes.
+
+\- request
+\<empty\>
+
+\- response
+
+```json
+[
+   {
+      "id": "8863aeba-ad84-4613-9a2f-a595beafd769",
+      "formId": 1,
+      "title": "User Feedback Form",
+      "subtitle": "Help us improve our services",
+      "color": "#3498db",
+      "answers": [
+         {
+            "$type": "DateAnswerModel",
+            "value": "2000-01-02",
+            "question": "What is your birthdate?"
+         },
+         {
+            "$type": "OpenAnswerModel",
+            "value": "email@example.com",
+            "question": "What is your email?"
+         },
+         {
+            "$type": "SingleOptionAnswerModel",
+            "value": "In-person",
+            "question": "Select your preferred contact method"
+         },
+         {
+            "$type": "SingleOptionAnswerModel",
+            "value": "In-store purchase",
+            "question": "Which service did you use?"
+         },
+         {
+            "$type": "MultipleOptionsAnswerModel",
+            "value": [
+               "Ease of use",
+               "Speed"
+            ],
+            "question": "What features do you like?"
+         }
+      ]
+   }
+]
+```

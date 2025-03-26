@@ -91,15 +91,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ix_forms_title");
 
                     b.ToTable("forms", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Color = "#7A5CFA",
-                            Subtitle = "Thu, Jun 5 at 07:00 PM EDT at The Amp Ballantyne",
-                            Title = "RUN THE JEWELS"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.QuestionOption", b =>
@@ -128,62 +119,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ix_question_options_question_id");
 
                     b.ToTable("question_options", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            QuestionId = 3,
-                            Value = "General Admission"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            QuestionId = 3,
-                            Value = "VIP"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            QuestionId = 3,
-                            Value = "Student"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            QuestionId = 4,
-                            Value = "Front row"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            QuestionId = 4,
-                            Value = "Middle row"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            QuestionId = 4,
-                            Value = "Back row"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            QuestionId = 5,
-                            Value = "Parking Pass"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            QuestionId = 5,
-                            Value = "Afterpaty ticket"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            QuestionId = 5,
-                            Value = "Backstage pass"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Questions.QuestionBase", b =>
@@ -204,12 +139,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("FormId")
                         .HasColumnType("integer")
                         .HasColumnName("form_id");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("key");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -314,16 +243,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("questions", (string)null);
 
                     b.HasDiscriminator().HasValue("DateQuestion");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            FormId = 1,
-                            Key = "birthdate",
-                            Title = "Date of birth",
-                            Validator = "birthdate"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Questions.OpenQuestion", b =>
@@ -339,17 +258,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("questions", (string)null);
 
                     b.HasDiscriminator().HasValue("OpenQuestion");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            FormId = 1,
-                            Key = "email",
-                            Title = "Email",
-                            Validator = "email",
-                            Placeholder = "Enter email address"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Questions.OptionsQuestionBase", b =>
@@ -368,16 +276,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("questions", (string)null);
 
                     b.HasDiscriminator().HasValue("MultipleOptionsQuestion");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5,
-                            FormId = 1,
-                            Key = "add-ons",
-                            Title = "Add-ons",
-                            Validator = "none"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Questions.SelectionQuestion", b =>
@@ -393,15 +291,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("questions", (string)null);
 
                     b.HasDiscriminator().HasValue("SelectionQuestion");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            FormId = 1,
-                            Key = "ticket-type",
-                            Title = "Ticket Type"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Questions.SingleOptionQuestion", b =>
@@ -411,15 +300,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("questions", (string)null);
 
                     b.HasDiscriminator().HasValue("SingleOptionQuestion");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 4,
-                            FormId = 1,
-                            Key = "preferred-seating",
-                            Title = "Preferred Seating"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Answers.AnswerBase", b =>

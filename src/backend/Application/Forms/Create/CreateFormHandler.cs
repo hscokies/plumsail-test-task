@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Abstractions;
-using Application.Models.Questions;
+using Application.Forms.Create.QuestionModels;
 using Domain.Entities;
 using Domain.Entities.Questions;
 using Domain.Enumerations;
@@ -28,7 +28,7 @@ public sealed class CreateFormHandler(IDataContext dataContext) : ICommandHandle
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Failed to create form.");
+            _logger.Error(e, "Failed to create form: {message}", e.Message);
             return Error.Failure("Form.Unknown", "Unhandled exception while creating form.");
         }
     }
@@ -63,7 +63,6 @@ public sealed class CreateFormHandler(IDataContext dataContext) : ICommandHandle
         {
             var discriminator = questionModel.GetDiscriminator();
             var question = QuestionDiscriminatorMapping.GetInstanceOrDefault<QuestionBase>(discriminator);
-            question.Key = questionModel.Key;
             question.Title = questionModel.Title;
             question.Validator = questionModel.Validator ?? QuestionValidators.None;
 
@@ -71,9 +70,9 @@ public sealed class CreateFormHandler(IDataContext dataContext) : ICommandHandle
             {
                 case OptionsQuestionBase optionsQuestion:
                     optionsQuestion.Options = ((IOptionsQuestionModel)questionModel).Options
-                        .Select(x => new QuestionOption()
+                        .Select(x => new QuestionOption
                         {
-                            Value = x.Label
+                            Value = x
                         }).ToArray();
                     break;
                 case IQuestionWithPlaceholder questionWithPlaceholder:

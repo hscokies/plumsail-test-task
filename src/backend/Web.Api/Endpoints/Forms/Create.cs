@@ -19,7 +19,9 @@ internal sealed class Create : IEndpoint
             CancellationToken ct) =>
         {
             var result = await handler.Handle(request, ct);
-            return result.Match(Results.Created, CustomResults.Problem);
+            return result.Match(
+                () => Results.Created(CreateFormCommand.Path, result.Value),
+                CustomResults.Problem);
         })
         .WithTags(Tags.Forms)
         .AddFluentValidationAutoValidation();

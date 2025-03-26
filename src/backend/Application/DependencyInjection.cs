@@ -15,6 +15,11 @@ public static class DependencyInjection
     {
         var assembly = Assembly.GetExecutingAssembly();
         return services
+            .AddMemoryCache(x =>
+            {
+                x.ExpirationScanFrequency = TimeSpan.FromMinutes(5);
+                x.SizeLimit = 300;
+            })
             .AddValidatorsFromAssembly(assembly)
             .AddFluentValidationAutoValidation()
             .AddHandlersFromAssembly(assembly);

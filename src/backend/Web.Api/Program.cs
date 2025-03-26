@@ -4,9 +4,7 @@ using Infrastructure;
 using Infrastructure.Persistence.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
 using Web.Api.Extensions;
@@ -30,12 +28,15 @@ try
     // Should have probably added health checks
     app.MapGet("/api/ping", (c) => c.Response.WriteAsync("Ok")).WithOpenApi();
 
+    app.UseExceptionHandler();
     app.UseLoggingMiddleware();
 
-    if (app.Environment.IsDevelopment())
+    if (app.Environment.IsProduction())
     {
         app.UseOpenApi();
         app.UseSwaggerUi(c => { c.Path = "/api/swagger"; });
+
+        // https://devblogs.microsoft.com/dotnet/introducing-devops-friendly-ef-core-migration-bundles/
         app.ApplyMigrations();
     }
 

@@ -1,4 +1,3 @@
-using Domain.Entities;
 using Domain.Entities.Questions;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,61 +7,32 @@ internal static class QuestionsSeeder
 {
     public static void Seed(this EntityTypeBuilder<OpenQuestion> builder)
     {
-        builder.HasData(new OpenQuestion()
-        {
-            Id = 1,
-            FormId = 1,
-            Key = "email",
-            Title = "Email",
-            Placeholder = "Enter email address",
-            Validator = "email"
-        });
+        // Add open questions here if needed
+        builder.HasData();
     }
 
 
     public static void Seed(this EntityTypeBuilder<DateQuestion> builder)
     {
-        builder.HasData(new DateQuestion()
-        {
-            Id = 2,
-            FormId = 1,
-            Key = "birthdate",
-            Title = "Date of birth",
-            Validator = "birthdate"
-        });
+        // Add date questions here if needed
+        builder.HasData();
     }
     
     public static void Seed(this EntityTypeBuilder<SelectionQuestion> builder)
     {
-        builder.HasData(new SelectionQuestion()
-        {
-            Id = 3,
-            FormId = 1,
-            Key = "ticket-type",
-            Title = "Ticket Type",
-        });
+        // Add selection (dropdown) questions here if needed
+        builder.HasData();
     }
     
     public static void Seed(this EntityTypeBuilder<SingleOptionQuestion> builder)
     {
-        builder.HasData(new SingleOptionQuestion()
-        {
-            Id = 4,
-            FormId = 1,
-            Key = "preferred-seating",
-            Title = "Preferred Seating",
-        });
+        // Add single option (radio) questions here if needed
+        builder.HasData();
     }
     
     public static void Seed(this EntityTypeBuilder<MultipleOptionsQuestion> builder)
     {
-        builder.HasData(new MultipleOptionsQuestion()
-        {
-            Id = 5,
-            FormId = 1,
-            Key = "add-ons",
-            Title = "Add-ons",
-            Validator = "none",
-        });
+        // Add multi option (checkbox) questions here if needed
+        builder.HasData();
     }
 }

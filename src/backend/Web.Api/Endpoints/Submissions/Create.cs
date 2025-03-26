@@ -1,5 +1,5 @@
 using System.Threading;
-using Application.Submissions.SubmitForm;
+using Application.Submissions.Create;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +12,15 @@ internal sealed class Create : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost(SubmitFormCommand.Path, async (
-                [FromBody] SubmitFormCommand query,
-                [FromServices] SubmitFormHandler handler,
+        app.MapPost(CreateSubmissionCommand.Path, async (
+                [FromBody] CreateSubmissionCommand query,
+                [FromServices] CreateSubmissionHandler handler,
                 CancellationToken ct) =>
             {
                 var result = await handler.Handle(query, ct);
-                return result.Match(Results.Ok, CustomResults.Problem);
+                return result.Match(
+                    () => Results.Created(CreateSubmissionCommand.Path, result.Value),
+                    CustomResults.Problem);
             })
             .WithTags(Tags.Submissions);
     }

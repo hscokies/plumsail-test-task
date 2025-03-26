@@ -4,17 +4,17 @@ namespace Domain.Errors;
 
 public static class AnswerErrors
 {
-    public static Error QuestionNotFound(int answerId)
+    public static Error QuestionNotFound(int questionId)
     {
         return Error.NotFound(
             "Answer.Question.NotFound",
-            $"Question for answer with the ID = '{answerId}' was not found");
+            $"Question with ID '{questionId}' not found.");
     }
 
-    public static Error OptionNotFound(int answerId, int optionId)
+    public static Error OptionNotFound(int questionId, int optionId)
     {
         return Error.NotFound(
             "Answer.Question.NotFound",
-            $"Answer option with the ID = '{optionId}' was not found for answer with the ID = '{answerId}'");
+            $"Answer option with ID '{optionId}' not found on question with ID '{questionId}'.");
     }
 }

@@ -1,21 +1,36 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Abstractions;
 using Domain.Entities;
-using Domain.Entities.Questions;
 using Domain.Primitives;
 using Infrastructure.Persistence.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Forms.Get;
 
-public sealed class GetFormsHandler(IDataContext dataContext) : IQueryHandler<GetFormsQuery, GetFormsResponse>
+public sealed class GetFormsHandler(IDataContext dataContext, IMemoryCache memoryCache)
+    : IQueryHandler<GetFormsQuery, GetFormsResponse>
 {
+    private readonly MemoryCacheEntryOptions _cacheOptions = new()
+    {
+        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+        Size = 1
+    };
+
     public async Task<Result<GetFormsResponse>> Handle(GetFormsQuery query, CancellationToken ct)
-        => await FetchForms(query, ct);
+    {
+        if (memoryCache.TryGetValue<GetFormsResponse>(query.Search, out var response))
+        {
+            return response;
+        }
+
+        response = await FetchForms(query, ct);
+        memoryCache.Set(query.Search, response, _cacheOptions);
+        return response;
+    }
 
     private async Task<GetFormsResponse> FetchForms(GetFormsQuery query, CancellationToken ct)
     {
@@ -35,12 +50,15 @@ public sealed class GetFormsHandler(IDataContext dataContext) : IQueryHandler<Ge
     
     private IQueryable<Form> GetFormsQuery(GetFormsQuery query)
     {
-        var formsQuery = dataContext.Forms.AsQueryable();
-        if (!string.IsNullOrWhiteSpace(query.Title))
+        if (dataContext.Database.IsNpgsql())
         {
-            formsQuery = formsQuery.Where(q => EF.Functions.ILike(q.Title, $"%{query.Title}%"));
+            // That's not very good practice cause of index utilization, but who cares : D
+            return dataContext.Forms.Where(q => EF.Functions.ILike(q.Title, $"%{query.Search}%") ||
+                                                EF.Functions.ILike(q.Subtitle, $"%{query.Search}%"));
         }
 
-        return formsQuery.AsNoTracking();
+        return dataContext.Forms.Where(q => q.Title.Contains(query.Search, StringComparison.OrdinalIgnoreCase) ||
+                                            q.Subtitle.Contains(query.Search, StringComparison.OrdinalIgnoreCase));
+            
     }
 }
