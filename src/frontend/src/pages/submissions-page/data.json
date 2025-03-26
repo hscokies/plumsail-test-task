@@ -33,7 +33,10 @@
       "birthdate": "2001-02-03",
       "ticket-type": "VIP",
       "preferred-seating": "Middle row",
-      "add-ons": ["Parking pass", "Afterpaty ticket"]
+      "add-ons": [
+        "Parking pass",
+        "Afterpaty ticket"
+      ]
     }
   ]
 }

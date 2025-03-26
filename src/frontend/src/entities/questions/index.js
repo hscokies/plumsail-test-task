@@ -6,4 +6,4 @@ import MultiOptionsQuestion from "./multiple-options-question/index.js";
 
 
 export * from "./config/questions.constants.js";
-export { OpenQuestion, DateQuestion, SelectionQuestion, OptionsQuestion, MultiOptionsQuestion };
+export {OpenQuestion, DateQuestion, SelectionQuestion, OptionsQuestion, MultiOptionsQuestion};

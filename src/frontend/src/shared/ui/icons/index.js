@@ -4,4 +4,4 @@ import Calendar from './calendar/index.vue';
 import BarChart from './bar-chart/index.vue';
 import Link from './link/index.vue';
 
-export { Checkmark, DownArrow, Calendar, BarChart, Link };
+export {Checkmark, DownArrow, Calendar, BarChart, Link};

@@ -1,7 +1,8 @@
 <script setup>
-import { TextField } from '@/shared/ui'
+import {TextField} from '@/shared/ui'
 import {computed, ref} from "vue";
-import { COMMON_VALIDATORS } from "@/shared/lib";
+import {COMMON_VALIDATORS} from "@/shared/lib";
+
 const props = defineProps({
   question: Object
 })
@@ -25,14 +26,14 @@ defineExpose({triggered, error, validate, value})
 
 <template>
   <TextField
-      @focusout="triggered = true"
       :id="'question'+question.id"
-      :name="question.id.toString()"
-      :label="question.title"
-      :placeholder="question.placeholder"
-      :value="value"
       :error="error"
       :helper-text="validator.helperText"
+      :label="question.title"
+      :name="question.id.toString()"
+      :placeholder="question.placeholder"
+      :value="value"
+      type="text"
       @changed="e => onChange(e)"
-      type="text"/>
+      @focusout="triggered = true"/>
 </template>

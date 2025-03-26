@@ -1,7 +1,8 @@
 <script setup>
-import {RadioButton, FormGroup, TextField} from '@/shared/ui'
+import {FormGroup, RadioButton} from '@/shared/ui'
 import {computed, ref} from "vue";
-import { COMMON_VALIDATORS } from "@/shared/lib";
+import {COMMON_VALIDATORS} from "@/shared/lib";
+
 const props = defineProps({
   question: Object
 })
@@ -29,20 +30,20 @@ defineExpose({triggered, error, validate, value})
 </script>
 
 <template>
-<FormGroup
-    :name="question.id.toString()"
-    :label="question.title"
-    :error="error">
-  <RadioButton
-      v-for="option in question.options"
-      :id="'question'+question.id"
-      :name="question.id"
-      :label="option.label"
-      :value="option.id"
-      :checked="value === option.id"
-      @changed="e => OnChange(e, option.id)"
-  />
-</FormGroup>
+  <FormGroup
+      :error="error"
+      :label="question.title"
+      :name="question.id.toString()">
+    <RadioButton
+        v-for="option in question.options"
+        :id="'question'+question.id"
+        :checked="value === option.id"
+        :label="option.label"
+        :name="question.id"
+        :value="option.id"
+        @changed="e => OnChange(e, option.id)"
+    />
+  </FormGroup>
 </template>
 
 <style scoped>

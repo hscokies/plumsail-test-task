@@ -1,7 +1,8 @@
 <script setup>
 import {computed, ref} from "vue";
 import {DatePicker} from '@/shared/ui'
-import { COMMON_VALIDATORS } from "@/shared/lib";
+import {COMMON_VALIDATORS} from "@/shared/lib";
+
 const props = defineProps({
   question: Object
 })
@@ -28,13 +29,13 @@ defineExpose({triggered, error, validate, value})
 </script>
 
 <template>
-      <DatePicker
-          @focusout="e => onChange(e)"
-          :id="'date-question-'+question.id"
-          :name="question.id"
-          :label="question.title"
-          :value="value"
-          :error="error"
-          @changed="e => onChange(e)"
-          format="yyyy/MM/dd"/>
+  <DatePicker
+      :id="'date-question-'+question.id"
+      :error="error"
+      :label="question.title"
+      :name="question.id"
+      :value="value"
+      format="yyyy/MM/dd"
+      @changed="e => onChange(e)"
+      @focusout="e => onChange(e)"/>
 </template>

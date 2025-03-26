@@ -1,7 +1,8 @@
 <script setup>
 import {computed, ref} from "vue";
-import {DatePicker, Dropdown, DropdownItem} from '@/shared/ui'
-import { COMMON_VALIDATORS } from "@/shared/lib";
+import {Dropdown, DropdownItem} from '@/shared/ui'
+import {COMMON_VALIDATORS} from "@/shared/lib";
+
 const props = defineProps({
   question: Object
 })
@@ -25,19 +26,19 @@ defineExpose({triggered, error, validate, value})
 </script>
 
 <template>
-      <Dropdown
-          :id="'selection-question-'+question.id"
-          :name="question.id"
-          :label="question.title"
-          :placeholder="question.placeholder"
-          :value="value?.label"
-          :error="error">
-        <DropdownItem
-            v-for="item in question.options"
-            :key="item.id"
-            :label="item.label"
-            @selected="onChange(item.id, item.label)"/>
-      </Dropdown>
+  <Dropdown
+      :id="'selection-question-'+question.id"
+      :error="error"
+      :label="question.title"
+      :name="question.id"
+      :placeholder="question.placeholder"
+      :value="value?.label">
+    <DropdownItem
+        v-for="item in question.options"
+        :key="item.id"
+        :label="item.label"
+        @selected="onChange(item.id, item.label)"/>
+  </Dropdown>
 </template>
 
 <style scoped>

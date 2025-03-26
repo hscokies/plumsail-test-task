@@ -18,8 +18,8 @@ defineProps({
 
 <template>
   <svg
-      :width="width"
       :height="height"
+      :width="width"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
     <path
