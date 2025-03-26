@@ -4,7 +4,8 @@ import {Dropdown, DropdownItem} from '@/shared/ui'
 import {COMMON_VALIDATORS} from "@/shared/lib";
 
 const props = defineProps({
-  question: Object
+  question: Object,
+  color: String,
 })
 
 const validator = computed(() => COMMON_VALIDATORS[props.question.validator] || COMMON_VALIDATORS.default);
@@ -33,8 +34,9 @@ defineExpose({triggered, error, validate, value})
       :error="error"
       :label="question.title"
       :name="question.id"
-      :placeholder="question.placeholder"
-      :value="title">
+      :placeholder="question.placeholder || question.title"
+      :value="title"
+      :color="color">
     <DropdownItem
         v-for="item in question.options"
         :key="item.id"

@@ -4,7 +4,8 @@ import {DatePicker} from '@/shared/ui'
 import {COMMON_VALIDATORS} from "@/shared/lib";
 
 const props = defineProps({
-  question: Object
+  question: Object,
+  color: String
 })
 
 const validator = computed(() => COMMON_VALIDATORS[props.question.validator] || COMMON_VALIDATORS.date);
@@ -35,6 +36,7 @@ defineExpose({triggered, error, validate, value})
       :label="question.title"
       :name="question.id"
       :value="value"
+      :color="color"
       format="yyyy/MM/dd"
       @changed="e => onChange(e)"
       @focusout="e => validate(e)"/>
