@@ -37,5 +37,5 @@ defineExpose({triggered, error, validate, value})
       :value="value"
       format="yyyy/MM/dd"
       @changed="e => onChange(e)"
-      @focusout="e => onChange(e)"/>
+      @focusout="e => validate(e)"/>
 </template>

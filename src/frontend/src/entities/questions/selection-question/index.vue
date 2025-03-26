@@ -9,12 +9,14 @@ const props = defineProps({
 
 const validator = computed(() => COMMON_VALIDATORS[props.question.validator] || COMMON_VALIDATORS.default);
 const triggered = ref(false)
+const title = ref(null)
 const value = ref(null)
 const error = ref()
 
 const onChange = (id, label) => {
   triggered.value = true
-  value.value = {id: id, label: label}
+  value.value = id;
+  title.value = label
   validate(value.value)
 }
 
@@ -32,7 +34,7 @@ defineExpose({triggered, error, validate, value})
       :label="question.title"
       :name="question.id"
       :placeholder="question.placeholder"
-      :value="value?.label">
+      :value="title">
     <DropdownItem
         v-for="item in question.options"
         :key="item.id"
