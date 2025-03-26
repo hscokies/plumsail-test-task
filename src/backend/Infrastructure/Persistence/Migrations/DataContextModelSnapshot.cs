@@ -255,6 +255,19 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("submissions", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Answers.DateAnswer", b =>
+                {
+                    b.HasBaseType("Domain.Entities.Answers.AnswerBase");
+
+                    b.Property<DateOnly>("Value")
+                        .HasColumnType("date")
+                        .HasColumnName("value");
+
+                    b.ToTable("answers", (string)null);
+
+                    b.HasDiscriminator().HasValue("DateAnswer");
+                });
+
             modelBuilder.Entity("Domain.Entities.Answers.OpenAnswer", b =>
                 {
                     b.HasBaseType("Domain.Entities.Answers.AnswerBase");
@@ -263,7 +276,11 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("value");
 
-                    b.ToTable("answers", (string)null);
+                    b.ToTable("answers", null, t =>
+                        {
+                            t.Property("Value")
+                                .HasColumnName("open_answer_value");
+                        });
 
                     b.HasDiscriminator().HasValue("OpenAnswer");
                 });

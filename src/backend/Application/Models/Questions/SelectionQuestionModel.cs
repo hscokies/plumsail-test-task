@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using Domain.Entities.Questions;
 
-namespace Application.Models;
+namespace Application.Models.Questions;
 
 public class SelectionQuestionModel : QuestionModel, IOptionsQuestionModel
 {

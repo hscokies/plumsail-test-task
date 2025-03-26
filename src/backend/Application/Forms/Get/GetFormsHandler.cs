@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Abstractions;
-using Application.Models;
 using Domain.Entities;
 using Domain.Entities.Questions;
 using Domain.Primitives;

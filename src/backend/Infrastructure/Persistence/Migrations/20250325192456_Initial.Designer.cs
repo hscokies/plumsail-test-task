@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250324184730_SeedForms")]
-    partial class SeedForms
+    [Migration("20250325192456_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -214,11 +214,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(256)")
                         .HasColumnName("key");
 
-                    b.Property<string>("Placeholder")
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)")
-                        .HasColumnName("placeholder");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -263,6 +258,19 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("submissions", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Answers.DateAnswer", b =>
+                {
+                    b.HasBaseType("Domain.Entities.Answers.AnswerBase");
+
+                    b.Property<DateOnly>("Value")
+                        .HasColumnType("date")
+                        .HasColumnName("value");
+
+                    b.ToTable("answers", (string)null);
+
+                    b.HasDiscriminator().HasValue("DateAnswer");
+                });
+
             modelBuilder.Entity("Domain.Entities.Answers.OpenAnswer", b =>
                 {
                     b.HasBaseType("Domain.Entities.Answers.AnswerBase");
@@ -271,7 +279,11 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("value");
 
-                    b.ToTable("answers", (string)null);
+                    b.ToTable("answers", null, t =>
+                        {
+                            t.Property("Value")
+                                .HasColumnName("open_answer_value");
+                        });
 
                     b.HasDiscriminator().HasValue("OpenAnswer");
                 });
@@ -296,6 +308,12 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("Domain.Entities.Questions.QuestionBase");
 
+                    b.Property<string>("Placeholder")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("placeholder");
+
                     b.ToTable("questions", (string)null);
 
                     b.HasDiscriminator().HasValue("DateQuestion");
@@ -315,6 +333,12 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("Domain.Entities.Questions.QuestionBase");
 
+                    b.Property<string>("Placeholder")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("placeholder");
+
                     b.ToTable("questions", (string)null);
 
                     b.HasDiscriminator().HasValue("OpenQuestion");
@@ -325,9 +349,9 @@ namespace Infrastructure.Persistence.Migrations
                             Id = 1,
                             FormId = 1,
                             Key = "email",
-                            Placeholder = "Enter email address",
                             Title = "Email",
-                            Validator = "email"
+                            Validator = "email",
+                            Placeholder = "Enter email address"
                         });
                 });
 
@@ -362,6 +386,12 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Questions.SelectionQuestion", b =>
                 {
                     b.HasBaseType("Domain.Entities.Questions.OptionsQuestionBase");
+
+                    b.Property<string>("Placeholder")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("placeholder");
 
                     b.ToTable("questions", (string)null);
 

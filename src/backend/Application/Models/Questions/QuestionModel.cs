@@ -1,9 +1,6 @@
-using System;
 using System.Text.Json.Serialization;
-using Domain.Entities.Questions;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Application.Models;
+namespace Application.Models.Questions;
 
 [JsonPolymorphic]
 [JsonDerivedType(typeof(OpenQuestionModel), OpenQuestionModel.Discriminator)]

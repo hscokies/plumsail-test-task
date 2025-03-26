@@ -1,5 +1,5 @@
 using System;
-using Application.Models;
+using Application.Models.Questions;
 using Domain.Entities.Questions;
 
 namespace Application.Factories;

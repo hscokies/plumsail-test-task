@@ -9,7 +9,8 @@ public static class AnswerDiscriminatorMapping
     public static readonly IReadOnlyDictionary<string, Type> DiscriminatorMapping = new Dictionary<string, Type>
     {
         [nameof(OpenAnswer)] = typeof(OpenAnswer),
-        [nameof(OptionAnswer)] = typeof(OptionAnswer)
+        [nameof(OptionAnswer)] = typeof(OptionAnswer),
+        [nameof(DateAnswer)] = typeof(DateAnswer)
     };
 
     public static Type GetTypeOrDefault(string discriminator)

@@ -1,4 +1,4 @@
-using Application.Models;
+using Application.Models.Questions;
 using Domain.Entities.Questions;
 using Domain.Enumerations;
 using FluentValidation;

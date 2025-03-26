@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
@@ -36,9 +38,9 @@ namespace Infrastructure.Persistence.Migrations
                     form_id = table.Column<int>(type: "integer", nullable: false),
                     key = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     title = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    placeholder = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     discriminator = table.Column<string>(type: "character varying(34)", maxLength: 34, nullable: false),
-                    validator = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    validator = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    placeholder = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,7 +99,8 @@ namespace Infrastructure.Persistence.Migrations
                     discriminator = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
                     submission_id = table.Column<Guid>(type: "uuid", nullable: false),
                     question_id = table.Column<int>(type: "integer", nullable: false),
-                    value = table.Column<string>(type: "text", nullable: true),
+                    value = table.Column<DateOnly>(type: "date", nullable: true),
+                    open_answer_value = table.Column<string>(type: "text", nullable: true),
                     option_id = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -121,6 +124,46 @@ namespace Infrastructure.Persistence.Migrations
                         principalTable: "submissions",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "forms",
+                columns: new[] { "id", "color", "subtitle", "title" },
+                values: new object[] { 1, "#7A5CFA", "Thu, Jun 5 at 07:00 PM EDT at The Amp Ballantyne", "RUN THE JEWELS" });
+
+            migrationBuilder.InsertData(
+                table: "questions",
+                columns: new[] { "id", "discriminator", "form_id", "key", "placeholder", "title", "validator" },
+                values: new object[,]
+                {
+                    { 1, "OpenQuestion", 1, "email", "Enter email address", "Email", "email" },
+                    { 2, "DateQuestion", 1, "birthdate", null, "Date of birth", "birthdate" },
+                    { 3, "SelectionQuestion", 1, "ticket-type", null, "Ticket Type", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "questions",
+                columns: new[] { "id", "discriminator", "form_id", "key", "title", "validator" },
+                values: new object[,]
+                {
+                    { 4, "SingleOptionQuestion", 1, "preferred-seating", "Preferred Seating", null },
+                    { 5, "MultipleOptionsQuestion", 1, "add-ons", "Add-ons", "none" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "question_options",
+                columns: new[] { "id", "question_id", "value" },
+                values: new object[,]
+                {
+                    { 1, 3, "General Admission" },
+                    { 2, 3, "VIP" },
+                    { 3, 3, "Student" },
+                    { 4, 4, "Front row" },
+                    { 5, 4, "Middle row" },
+                    { 6, 4, "Back row" },
+                    { 7, 5, "Parking Pass" },
+                    { 8, 5, "Afterpaty ticket" },
+                    { 9, 5, "Backstage pass" }
                 });
 
             migrationBuilder.CreateIndex(

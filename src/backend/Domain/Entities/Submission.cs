@@ -9,5 +9,5 @@ public class Submission
     public Guid Id { get; init; }
     public int FormId { get; init; }
     public Form Form { get; init; }
-    public ICollection<AnswerBase> Answers { get; init; }
+    public ICollection<AnswerBase> Answers { get; init; } = [];
 }

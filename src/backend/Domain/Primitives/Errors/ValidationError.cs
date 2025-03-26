@@ -5,7 +5,7 @@ namespace Domain.Primitives.Errors;
 
 public sealed record ValidationError : Error
 {
-    public ValidationError(Error[] errors)
+    public ValidationError(ICollection<Error> errors)
         : base(
             "Validation.General",
             "One or more validation errors occurred",
