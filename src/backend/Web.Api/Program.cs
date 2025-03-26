@@ -31,7 +31,7 @@ try
     app.UseExceptionHandler();
     app.UseLoggingMiddleware();
 
-    if (app.Environment.IsProduction())
+    if (!app.Environment.IsProduction())
     {
         app.UseOpenApi();
         app.UseSwaggerUi(c => { c.Path = "/api/swagger"; });

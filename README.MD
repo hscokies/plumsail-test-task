@@ -86,7 +86,7 @@ POST: _/api/forms_
 
 #### Get available forms
 
-POST: _/api/forms?Search={string?}_
+GET: _/api/forms?Search={string?}_
 
 *Response of this method is cached for 5 minutes.
 
@@ -108,7 +108,7 @@ POST: _/api/forms?Search={string?}_
 
 #### Get form
 
-POST: _/api/forms/{id:int}_
+GET: _/api/forms/{id:int}_
 
 \- request
 \<empty\>
