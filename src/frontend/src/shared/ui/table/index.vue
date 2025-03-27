@@ -18,7 +18,7 @@ defineProps({
       </th>
     </tr>
     </thead>
-    <tbody class="table-body">
+    <tbody v-if="rows" class="table-body">
     <tr v-for="row in rows" class="table-row">
       <td v-for="column in columns" class="table-cell">
         {{ row[column.key] }}
@@ -65,7 +65,7 @@ defineProps({
     text-align: center;
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-evenly;
+    gap: 16px;
   }
 }
 </style>

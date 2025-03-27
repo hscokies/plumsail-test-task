@@ -51,7 +51,6 @@ const addQuestionRef = (questionComponent, questionData) => {
 }
 const onSubmit = useThrottleFn(() => {
   const request = {formId: formId.value, answers: []};
-  console.log(request)
   let hasErrors = false;
   for (let question of questionsRef.value) {
     if (!question.ref.triggered) {
