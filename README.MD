@@ -1,4 +1,56 @@
 # Plumsail test task
+
+## Build from source
+
+To build and run this project from source, follow these steps:
+
+### Prerequisites
+
+Ensure you have the following installed on your system:
+
+- Node.js
+- .NET 9
+
+### Setup and Build the Frontend (Vite + Vue)
+
+```
+cd /src/frontend # Navigate to frontend source directory
+npm i  # Install dependencies
+npm run build  # Build
+```
+
+### Setup and Build the Backend (ASP.NET Core)
+
+```
+cd /src/backend  # Navigate to backend directory
+dotnet restore  # Restore dependencies
+dotnet build -c Release  # Build
+```
+
+## Running the Application
+
+Run the Backend
+
+```
+cd /src/backend/Web.Api/bin/Release/net9.0 # Navigate to build directory
+dotnet Web.Api.dll
+```
+
+By default, the backend runs on following urls:
+
+- https://localhost:5001
+- http://localhost:5000
+
+Run the Frontend
+
+```
+cd /src/frontend
+npm run preview
+```
+
+By default, the frontend runs on http://localhost:3000.
+
+## Task
 1. Create an arbitrary form with CSS and Vue as a JavaScript framework. Say, a contact or order form with at least five
    fields of different types:
     - text
@@ -31,37 +83,38 @@ POST: _/api/forms_
 
 ```json
 {
-   "title": "User Feedback Form",
-   "subtitle": "Help us improve our services",
-   "color": "#3498db",
+   "title": "string",
+   "subtitle": "string",
+   "color": "string",
    "questions": [
       {
          "$type": "OpenQuestion",
-         "Title": "What is your email?",
-         "Placeholder": "Enter your email",
-         "Validator": "email"
+         "Title": "string",
+         "Placeholder": "string",
+         "Validator": "string" // see src/frontend/src/shared/lib/validators/common-validators.js
       },
       {
          "$type": "DateQuestion",
-         "Title": "What is your birthdate?",
-         "Validator": "birthdate"
+         "Title": "string",
+         "Validator": "string"
       },
       {
          "$type": "SelectionQuestion",
-         "Title": "Select your preferred contact method",
-         "Placeholder": "Choose one",
+         "Title": "string",
+         "Placeholder": "string",
+         "Validator": "string",
          "options": [
-            "Email",
-            "Phone",
-            "In-person"
+            "string",
+            "string"
          ]
       },
       {
          "$type": "SingleOptionQuestion",
-         "Title": "Which service did you use?",
+         "Title": "string",
+         "Validator": "string",
          "options": [
-            "Delivery",
-            "In-store purchase"
+            "string",
+            "string"
          ]
       },
       {
@@ -69,9 +122,8 @@ POST: _/api/forms_
          "Title": "What features do you like?",
          "Validator": "checkbox",
          "options": [
-            "Speed",
-            "Customer support",
-            "Ease of use"
+            "string",
+            "string"
          ]
       }
    ]
@@ -248,7 +300,7 @@ POST: _/submissions_
 
 #### Get submissions (all forms)
 
-GET: _/submissions/api/submissions?Search={string?}_
+GET: _/api/submissions?Search={string?}_
 
 *Response of this method is cached for 5 minutes.
 
