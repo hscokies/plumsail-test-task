@@ -4,11 +4,12 @@ import {DatePicker} from '@/shared/ui'
 import {COMMON_VALIDATORS} from "@/shared/lib";
 
 const props = defineProps({
-  question: Object
+  question: Object,
 })
 
 const validator = computed(() => COMMON_VALIDATORS[props.question.validator] || COMMON_VALIDATORS.date);
 const triggered = ref(false)
+const dateValue = ref(null)
 const value = ref(null)
 const error = ref('')
 
@@ -17,13 +18,14 @@ const onChange = (event) => {
   validateInternal(date);
 
   triggered.value = true;
-  value.value = error.value ? null : date;
+  dateValue.value = error.value ? null : date;
+  value.value = date?.toISOString().split('T')[0];
 }
 
 const validateInternal = (date) => {
   error.value = validator?.value.check(date)
 }
-const validate = () => validateInternal(value.value);
+const validate = () => validateInternal(dateValue.value);
 
 defineExpose({triggered, error, validate, value})
 </script>
@@ -34,8 +36,8 @@ defineExpose({triggered, error, validate, value})
       :error="error"
       :label="question.title"
       :name="question.id"
-      :value="value"
+      :value="dateValue"
       format="yyyy/MM/dd"
       @changed="e => onChange(e)"
-      @focusout="e => onChange(e)"/>
+      @focusout="e => validate(e)"/>
 </template>

@@ -18,10 +18,10 @@ defineProps({
       </th>
     </tr>
     </thead>
-    <tbody class="table-body">
+    <tbody v-if="rows" class="table-body">
     <tr v-for="row in rows" class="table-row">
       <td v-for="column in columns" class="table-cell">
-        {{ row[column.key] }}
+        <pre>{{ row[column.key] }}</pre>
       </td>
       <td v-if="hasActions" class="table-cell cell-actions">
         <slot :row="row" name="data"></slot>
@@ -61,11 +61,8 @@ defineProps({
     text-align: left;
   }
 
-  .cell-actions {
-    text-align: center;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-evenly;
+  .cell-actions:not(:last-child) {
+    margin-right: 16px;
   }
 }
 </style>

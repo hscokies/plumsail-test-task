@@ -12,4 +12,15 @@ export default defineConfig({
             '@': path.resolve(__dirname, './src/'),
         },
     },
+    server: {
+        cors: false,
+        port: process.env.PORT || 3000,
+        proxy: {
+            '/api/': {
+                target: process.env.API_URL || 'https://localhost:5001',
+                changeOrigin: true,
+                secure: false,
+            },
+        },
+    },
 })

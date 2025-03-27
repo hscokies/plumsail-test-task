@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'CustomFont';
+    font-family: 'Noto Sans';
     src: url('../fonts/NotoSans.woff2') format('woff2');
     font-weight: normal;
 }
@@ -45,4 +45,23 @@ button, input, optgroup, select, textarea {
     font-size: 100%;
     line-height: 1.15;
     margin: 0;
+}
+
+
+.skeleton {
+    animation: 2s ease-in-out 0.5s infinite pulse;
+    background-color: #F3F4F9;
+    border-top-color: transparent;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
 }

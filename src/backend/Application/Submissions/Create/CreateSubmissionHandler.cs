@@ -8,6 +8,7 @@ using Application.Submissions.Create.AnswerModels;
 using Domain.Entities;
 using Domain.Entities.Answers;
 using Domain.Entities.Questions;
+using Domain.Enumerations;
 using Domain.Errors;
 using Domain.Primitives;
 using Domain.Primitives.Errors;
@@ -60,7 +61,7 @@ public sealed class CreateSubmissionHandler(IDataContext dataContext) : ICommand
         foreach (var question in form.Questions)
         {
             var answer = command.Answers.FirstOrDefault(x => x.QuestionId == question.Id);
-            if (answer is null)
+            if (answer is null && question.Validator is not QuestionValidators.None)
             {
                 errors.Add(AnswerErrors.QuestionNotFound(question.Id));
                 continue;

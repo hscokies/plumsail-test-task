@@ -9,7 +9,7 @@ defineProps({
   label: String,
   placeholder: String,
   error: String,
-
+  color: String,
   value: String,
 })
 const {elementRef, active, toggleActive} = useOutsideClick(false);
@@ -65,7 +65,7 @@ onUnmounted(() => {
       </label>
       <div ref="inputRef" :class="['dropdown_input', active && 'active', error?.length > 0 && 'error']">
         {{ value || placeholder }}
-        <DownArrow :color="error?.length > 0 ? '#EB5757' : '#7A5CFA'" class="dropdown_input_arrow"/>
+        <DownArrow :color="error?.length > 0 ? '#EB5757' : color" class="dropdown_input_arrow"/>
       </div>
       <ul v-if="active" ref="menuRef" class="dropdown_elements">
         <slot></slot>

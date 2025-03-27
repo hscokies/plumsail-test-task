@@ -10,6 +10,7 @@ defineProps({
   value: Date,
   placeholder: String,
   error: String,
+  color: String,
   format: {
     type: String,
     default: 'yyyy-MM-dd',
@@ -59,7 +60,7 @@ const formatDate = (value, format) => {
           class="datepicker_picker"
           type="date"
           @change="$emit('changed', $event)"/>
-      <Calendar :color="error ? '#EB5757' : undefined" @click="datepicker.showPicker()"/>
+      <Calendar :color="error ? '#EB5757' : color" @click="datepicker.showPicker()"/>
     </div>
     <span :class="['datepicker_error', error?.length > 0 && 'active']">{{ error }}</span>
   </div>
