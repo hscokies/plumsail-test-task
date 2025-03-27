@@ -32,13 +32,12 @@ const headers = [
 
 const onSearch = useDebounceFn((event) => {
   search.value = event.target.value
-  console.log(search.value)
 }, 1000)
 </script>
 
 <template>
   <div class="top-menu">
-    <RouterLink to="/submissions">
+    <RouterLink :to="ROUTES.Submissions">
       Go to submissions
     </RouterLink>
     <TextField
