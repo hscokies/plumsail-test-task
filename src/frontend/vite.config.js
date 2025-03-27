@@ -14,12 +14,12 @@ export default defineConfig({
     },
     server: {
         cors: false,
-        port: process.env.API_URL || 3000,
+        port: process.env.PORT || 3000,
         proxy: {
             '/api/': {
                 target: process.env.API_URL || 'https://localhost:5001',
                 changeOrigin: true,
-                secure: true,
+                secure: false,
             },
         },
     },

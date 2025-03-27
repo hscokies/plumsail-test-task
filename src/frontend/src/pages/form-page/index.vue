@@ -1,6 +1,7 @@
 <script setup>
-import MockData from './data.json'
-import {Button, BUTTON_VARIANTS, FORM_BLOCK_VARIANTS, FormBlock} from "@/shared/ui/index.js";
+import {useMutation, useQuery} from '@tanstack/vue-query'
+import {formsApi, submissionsApi} from '@/shared/api'
+import {Button, BUTTON_VARIANTS, Error, FORM_BLOCK_VARIANTS, FormBlock} from "@/shared/ui/index.js";
 import {
   DateQuestion,
   MultiOptionsQuestion,
@@ -9,20 +10,36 @@ import {
   QUESTION_TYPE,
   SelectionQuestion
 } from '@/entities'
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {useRoute} from "vue-router";
+import {useThrottleFn} from "@vueuse/core";
+
+const route = useRoute();
+const formId = computed(() => route.params.id);
+const isSubmitted = ref(false);
+
+const {isPending, data, isError: IsFetchError, error: fetchError} = useQuery({
+  queryKey: ['get-form', formId.value],
+  queryFn: () => formsApi.getById(formId.value)
+});
+
+const {mutate, data: InterviewId, isError: IsSubmitError, error: submissionError} = useMutation({
+  mutationFn: (submission) => submissionsApi.submit(submission),
+  onSuccess: () => isSubmitted.value = true,
+});
 
 const getQuestion = (type) => {
   return {
     [QUESTION_TYPE.OpenQuestion]: OpenQuestion,
     [QUESTION_TYPE.DateQuestion]: DateQuestion,
     [QUESTION_TYPE.SelectionQuestion]: SelectionQuestion,
-    [QUESTION_TYPE.OptionsQuestion]: OptionsQuestion,
+    [QUESTION_TYPE.SingleOptionQuestion]: OptionsQuestion,
     [QUESTION_TYPE.MultipleOptionsQuestion]: MultiOptionsQuestion,
   }[type]
 }
 
-const response = ref(MockData);
 const questionsRef = ref(new Set());
+
 const addQuestionRef = (questionComponent, questionData) => {
   if (questionComponent) {
     questionsRef.value.add({
@@ -32,40 +49,53 @@ const addQuestionRef = (questionComponent, questionData) => {
     })
   }
 }
-const onSubmit = () => {
-  const request = {formId: MockData.id, answers: []};
+const onSubmit = useThrottleFn(() => {
+  const request = {formId: formId.value, answers: []};
+  console.log(request)
   let hasErrors = false;
   for (let question of questionsRef.value) {
-    question.ref.validate();
+    if (!question.ref.triggered) {
+      question.ref.validate();
+    }
+
     if (question.ref.error) {
       hasErrors = true;
       continue;
     }
 
-    request.answers.push({
-      $type: question.$type,
-      id: question.id,
-      value: question.ref.value,
-    });
+    if (question.ref.value) {
+      request.answers.push({
+        $type: question.$type,
+        questionId: question.id,
+        value: question.ref.value,
+      });
+    }
   }
   if (hasErrors) {
     return;
   }
 
-  const json = JSON.stringify(request, null, 2);
-  console.debug("POST: /api/submissions", json);
-}
+  mutate(request);
+}, 1000);
+
 </script>
 
 <template>
   <div class="form-page">
     <form class="form-page_wrapper" @submit.prevent="onSubmit">
-      <FormBlock :color="response.color" :variant="FORM_BLOCK_VARIANTS.ACCENT">
-        <h1 class="form-page_header_title">{{ response.title }}</h1>
-        <p class="form-page_header_subtitle">{{ response.subtitle }}</p>
+      <input aria-hidden="true" disabled style="display: none" type="submit"/>
+      <FormBlock :color="data?.color" :loading="isPending || IsFetchError" :variant="FORM_BLOCK_VARIANTS.ACCENT">
+        <h1 class="form-page_header_title">{{ data?.title }}</h1>
+        <p v-if="!isSubmitted" class="form-page_header_subtitle">{{ data?.subtitle }}</p>
+        <div v-else>
+          <p class="form-page_header_subtitle">Your response has been recorded.</p>
+          <p class="form-page_header_subtitle">Interview ID: {{ InterviewId }}</p>
+        </div>
       </FormBlock>
 
-      <FormBlock v-for="question in response.questions" :key="question.id">
+      <FormBlock v-for="question in [1,2,3,4]" v-if="IsFetchError || isPending" :key="question.id" :loading="true"/>
+
+      <FormBlock v-for="question in data.questions" v-if="data && !isSubmitted" :key="question.id">
         <component
             :is="getQuestion(question.$type)"
             :ref="q => addQuestionRef(q, question)"
@@ -73,11 +103,19 @@ const onSubmit = () => {
         />
       </FormBlock>
 
-      <div class="form-page_button-container">
-        <Button :variant="BUTTON_VARIANTS.Primary" type="submit">Submit</Button>
+      <div v-if="data" class="form-page_button-container">
+        <Button v-if="!isSubmitted" :variant="BUTTON_VARIANTS.Primary" type="submit">Submit</Button>
+        <Button
+            v-if="isSubmitted"
+            :variant="BUTTON_VARIANTS.Secondary"
+            type="button"
+            @click="() => isSubmitted = false">
+          Submit another response
+        </Button>
       </div>
     </form>
   </div>
+  <Error v-if="IsSubmitError || IsFetchError" :trace-id="fetchError?.traceId || submissionError?.traceId"/>
 </template>
 
 <style scoped>
@@ -95,6 +133,10 @@ const onSubmit = () => {
   gap: 15px;
   height: 100%;
   width: 70%;
+
+  @media (max-width: 640px) {
+    width: 100%;
+  }
 }
 
 .form-page_header_title {

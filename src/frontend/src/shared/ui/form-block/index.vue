@@ -1,6 +1,7 @@
 <script setup>
 
 defineProps({
+  loading: Boolean,
   variant: {
     type: String,
     default: 'passive',
@@ -13,13 +14,14 @@ defineProps({
 </script>
 
 <template>
-  <div :class="['form-block', variant]" :style="'border-top-color:' + color">
+  <div :class="['form-block', variant, loading && 'skeleton']" :style="'border-top-color:' + color">
     <slot/>
   </div>
 </template>
 
 <style scoped>
 .form-block {
+  position: relative;
   display: flex;
   flex-flow: column nowrap;
   width: 100%;
@@ -33,6 +35,10 @@ defineProps({
 
   &.accent {
     border-top: 5px solid;
+  }
+
+  &.skeleton {
+    height: 150px;
   }
 }
 </style>
