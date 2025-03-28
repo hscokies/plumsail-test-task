@@ -1,0 +1,34 @@
+services:
+  backend:
+    image: plumsail-backend:latest
+    networks:
+      - proxy
+      - database
+    environment:
+      - SOLUTION_NAME=Plumsail
+      - ASPNETCORE_ENVIRONMENT=test
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        order: start-first
+        failure_action: rollback
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.swarm.network=proxy"
+        - "traefik.http.routers.plumsail-backend.entrypoints=websecure"
+        - "traefik.http.routers.plumsail-backend.rule=Host(`plumsail.hscokies.xyz`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.plumsail-backend.tls=true"
+        - "traefik.http.routers.plumsail-backend.tls.certresolver=cloudflare"
+        - "traefik.http.services.plumsail-backend.loadbalancer.server.port=8080"
+        - "traefik.http.middlewares.plumsail-backend-auth.basicauth.users=plumsail:$$2y$$05$$kYMeBQhU9TZBbmpasPXwsOnzwhbsWWaZbvfqiVfG8XliNGCpnmxje"
+        - "traefik.http.routers.plumsail-backend.middlewares=plumsail-backend-auth"
+
+networks:
+  database:
+    external: true
+  proxy:
+    external: true

@@ -1,0 +1,30 @@
+services:
+  frontend:
+    image: plumsail-frontend:latest
+    networks:
+      - proxy
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        order: start-first
+        failure_action: rollback
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.swarm.network=proxy"
+        - "traefik.http.routers.plumsail-frontend.entrypoints=websecure"
+        - "traefik.http.routers.plumsail-frontend.rule=Host(`plumsail.hscokies.xyz`)"
+        - "traefik.http.routers.plumsail-frontend.tls=true"
+        - "traefik.http.routers.plumsail-frontend.tls.certresolver=cloudflare"
+        - "traefik.http.services.plumsail-frontend.loadbalancer.server.port=8080"
+        - "traefik.http.middlewares.plumsail-frontend-auth.basicauth.users=plumsail:$$2y$$05$$kYMeBQhU9TZBbmpasPXwsOnzwhbsWWaZbvfqiVfG8XliNGCpnmxje"
+        - "traefik.http.routers.plumsail-frontend.middlewares=plumsail-frontend-auth"
+
+networks:
+  database:
+    external: true
+  proxy:
+    external: true

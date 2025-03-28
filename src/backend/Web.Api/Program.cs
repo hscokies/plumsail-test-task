@@ -33,8 +33,12 @@ try
 
     if (!app.Environment.IsProduction())
     {
-        app.UseOpenApi();
-        app.UseSwaggerUi(c => { c.Path = "/api/swagger"; });
+        app.UseOpenApi(c => { c.Path = "/api/swagger/{documentName}/swagger.json"; });
+        app.UseSwaggerUi(c =>
+        {
+            c.DocumentPath = "/api/swagger/{documentName}/swagger.json";
+            c.Path = "/api/swagger";
+        });
 
         // https://devblogs.microsoft.com/dotnet/introducing-devops-friendly-ef-core-migration-bundles/
         app.ApplyMigrations();
@@ -46,7 +50,7 @@ try
 }
 catch (Exception ex)
 {
-    logger.Error(ex, "Exception occured during startup.");
+    logger.Error(ex, "Exception occured during startup {message}.", ex.Message);
 }
 finally
 {
