@@ -53,7 +53,7 @@ public sealed class CreateSubmissionHandler(IDataContext dataContext) : ICommand
     {
         var submission = new Submission
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.CreateVersion7(),
             FormId = command.FormId
         };
 
